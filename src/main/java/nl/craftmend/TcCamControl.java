@@ -20,7 +20,7 @@ public final class TcCamControl extends JavaPlugin {
     }
 
     public void onEnable() {
-        //Bukkit.getServer().getPluginManager().registerEvents(new listener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new listener(), this);
         TcCamControl = this;
         SignAction.register(new cameraSign());
     }

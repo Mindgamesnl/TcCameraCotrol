@@ -30,6 +30,6 @@ public class screenManager {
     }
 
     public static playerScreen get(Player p) {
-        return (playerScreen)list.get(p);
+        return (playerScreen)list.get(p.getName());
     }
 }

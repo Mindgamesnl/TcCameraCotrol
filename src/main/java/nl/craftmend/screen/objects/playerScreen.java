@@ -77,7 +77,6 @@ public class playerScreen {
     }
 
     public void exit() {
-        Bukkit.broadcastMessage("doei!");
         this.p.setGameMode(this.gameMode);
         this.minecart.setPassenger(this.p);
         this.as.setHealth(0);
@@ -89,6 +88,7 @@ public class playerScreen {
             this.p.setSpectatorTarget(this.as);
         }
     }
+
 
 
     public void update() {
