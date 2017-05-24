@@ -2,16 +2,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>parkcircle</groupId>
-  <artifactId>ScreenRotationAPI</artifactId>
-  <name>ScreenRotationAPI</name>
-  <version>1.0-SNAPSHOT</version>
-  <description>ScreenRotationAPI</description>
+  <artifactId>TcCamControl</artifactId>
+  <name>TcCamControl</name>
+  <version>1.1-SNAPSHOT</version>
+  <description>TcCamControl</description>
   <build>
     <defaultGoal>clean package</defaultGoal>
     <resources>
       <resource>
         <filtering>true</filtering>
         <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>${project.basedir}</directory>
+        <includes>
+          <include>/lib/tc.jar</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>${project.basedir}</directory>
+        <includes>
+          <include>/lib/bk.jar</include>
+        </includes>
       </resource>
     </resources>
     <plugins>
@@ -82,6 +94,20 @@
           <groupId>org.yaml</groupId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>bkcommonlib</groupId>
+      <artifactId>bkcommonlib</artifactId>
+      <version>5.5.8</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/bk.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>tc</groupId>
+      <artifactId>tc</artifactId>
+      <version>5.5.8</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/tc.jar</systemPath>
     </dependency>
   </dependencies>
   <properties>

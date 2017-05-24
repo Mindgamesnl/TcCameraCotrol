@@ -1,14 +1,6 @@
-name: ScreenRotationAPI
+name: TcCamControl
 version: 1.1-SNAPSHOT
-main: nl.parkcircle.ScreenRotationAPI
+main: nl.craftmend.TcCamControl
 authors: [Mindgamsenl, Casdraakje]
-description: ScreenRotationAPI
-depend: [ProtocolLib]
-commands:
-   screenrotationapi:
-      description: kloten command
-
-permissions:
-  screenAPI.set:
-    description: the cool command
-    default: op
+description: TcCamControl
+depend: [ProtocolLib,BKCommonLib,Train_Carts]

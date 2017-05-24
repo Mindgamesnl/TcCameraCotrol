@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>parkcircle</groupId>
-    <artifactId>ScreenRotationAPI</artifactId>
+    <artifactId>TcCamControl</artifactId>
     <version>1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>ScreenRotationAPI</name>
+    <name>TcCamControl</name>
 
-    <description>ScreenRotationAPI</description>
+    <description>TcCamControl</description>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -50,6 +50,18 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
+            <resource>
+                <directory>${project.basedir}</directory>
+                <includes>
+                    <include>/lib/tc.jar</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>${project.basedir}</directory>
+                <includes>
+                    <include>/lib/bk.jar</include>
+                </includes>
+            </resource>
         </resources>
     </build>
 
@@ -62,6 +74,7 @@
             <id>dmulloy2-repo</id>
             <url>http://repo.dmulloy2.net/content/groups/public/</url>
         </repository>
+
     </repositories>
 
     <dependencies>
@@ -71,7 +84,20 @@
             <version>1.11.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>bkcommonlib</groupId>
+            <artifactId>bkcommonlib</artifactId>
+            <version>5.5.8</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/bk.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>tc</groupId>
+            <artifactId>tc</artifactId>
+            <version>5.5.8</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/tc.jar</systemPath>
+        </dependency>
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib-API</artifactId>
