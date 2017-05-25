@@ -59,80 +59,31 @@ public class cameraSign extends SignAction {
 
     public void prosess(MinecartMember<?> member, SignActionEvent info) {
 
-        if (info.getLine(3).contains("smooth:")) {
-
-            if (((CommonMinecart) member.getEntity()).getPassenger() instanceof Player) {
-
-                final Integer[] stepsFin = {0};
-                Integer schedule = 0;
-
-                Float startYaw = ((CommonMinecart) member.getEntity()).getPlayerPassenger().getLocation().getYaw();
-                Float startPitch = ((CommonMinecart) member.getEntity()).getPlayerPassenger().getLocation().getPitch();
-
-                Float targetYaw = Float.parseFloat(info.getLine(2).split(":")[0]);
-                Float targetPitch = Float.parseFloat(info.getLine(2).split(":")[1]);
-
-                Float relativeYaw = (startYaw + targetYaw) / Integer.parseInt(info.getLine(3).replace("smooth:", ""));
-                Float relativePitch = (startPitch + targetPitch) / Integer.parseInt(info.getLine(3).replace("smooth:", ""));
-
-                final Float[] curY = new Float[1];
-                final Float[] curP = new Float[1];
-
-                UUID id = ((CommonMinecart) member.getEntity()).getUniqueId();
-                Player p = ((CommonMinecart) member.getEntity()).getPlayerPassenger();
-                Integer finalSchedule = schedule;
-                Integer finalSchedule1 = schedule;
-                schedule = Bukkit.getScheduler().scheduleSyncRepeatingTask(TcCamControl.getPl(), new Runnable() {
-                    @Override
-                    public void run() {
-                        Boolean changed = false;
-                        stepsFin[0]++;
-                        if (!(Math.round((relativeYaw * stepsFin[0])) > targetYaw)) {
-                            curY[0] = Float.valueOf(Math.round(relativeYaw * stepsFin[0]));
-                            changed = true;
-                        }
-
-                        if (!(Math.round((relativePitch * stepsFin[0])) > targetPitch)) {
-                            curP[0] = Float.valueOf(Math.round((relativePitch * stepsFin[0])));
-                            changed = true;
-                        }
-
-                        if (!changed) {
-                            Bukkit.getScheduler().cancelTask(finalSchedule1);
-                        } else {
-                            screenManager.set(p, curY[0], curP[0], id);
-                        }
-                     }
-                }, 2, 2);
-
+        if (((CommonMinecart) member.getEntity()).getPassenger() instanceof Player) {
+            if (info.getLine(2).equalsIgnoreCase("reset")) {
+            } else {
+                Float yaw = Float.parseFloat(info.getLine(2).split(":")[0]);
+                Float pitch = Float.parseFloat(info.getLine(2).split(":")[1]);
+                screenManager.set(((CommonMinecart) member.getEntity()).getPlayerPassenger(), yaw, pitch, ((CommonMinecart) member.getEntity()).getUniqueId());
             }
-
         } else {
-            if (((CommonMinecart) member.getEntity()).getPassenger() instanceof Player) {
-                if (info.getLine(2).equalsIgnoreCase("reset")) {
-                } else {
+            if (info.getLine(2).equalsIgnoreCase("reset")) {
+                for (playerScreen screen : screenManager.list.values()) {
+                    if (screen.getId() == ((CommonMinecart) info.getMember().getEntity()).getUniqueId()) {
+                        screenManager.reset(screen.getPlayer());
+
+                    }
+                }
+            }
+            for (playerScreen screen : screenManager.list.values()) {
+                if (screen.getId() == ((CommonMinecart) member.getEntity()).getUniqueId()) {
                     Float yaw = Float.parseFloat(info.getLine(2).split(":")[0]);
                     Float pitch = Float.parseFloat(info.getLine(2).split(":")[1]);
-                    screenManager.set(((CommonMinecart) member.getEntity()).getPlayerPassenger(), yaw, pitch, ((CommonMinecart) member.getEntity()).getUniqueId());
-                }
-            } else {
-                if (info.getLine(2).equalsIgnoreCase("reset")) {
-                    for (playerScreen screen : screenManager.list.values()) {
-                        if (screen.getId() == ((CommonMinecart) info.getMember().getEntity()).getUniqueId()) {
-                            screenManager.reset(screen.getPlayer());
-
-                        }
-                    }
-                }
-                for (playerScreen screen : screenManager.list.values()) {
-                    if (screen.getId() == ((CommonMinecart) member.getEntity()).getUniqueId()) {
-                        Float yaw = Float.parseFloat(info.getLine(2).split(":")[0]);
-                        Float pitch = Float.parseFloat(info.getLine(2).split(":")[1]);
-                        screenManager.set(screen.getPlayer(), yaw, pitch, screen.getId());
-                    }
+                    screenManager.set(screen.getPlayer(), yaw, pitch, screen.getId());
                 }
             }
         }
+
 
 
     }

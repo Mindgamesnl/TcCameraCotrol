@@ -18,6 +18,16 @@ public class listener implements Listener {
     }
 
     @EventHandler
+    public void onTeleport(PlayerTeleportEvent e) {
+        if (e.getCause() == PlayerTeleportEvent.TeleportCause.SPECTATE) {
+            if (screenManager.get(e.getPlayer()) != null) {
+                e.setCancelled(true);
+                screenManager.get(e.getPlayer()).enter();
+            }
+        }
+    }
+
+    @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
         if (screenManager.get(e.getPlayer()) != null) {
             e.setCancelled(true);

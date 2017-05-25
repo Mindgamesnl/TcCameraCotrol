@@ -34,7 +34,7 @@ public class playerScreen {
         this.as.setVisible(false);
         this.gameMode = p.getGameMode();
         this.p = p;
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "gamemode 3 " + this.p.getName());
+        this.p.setGameMode(GameMode.SPECTATOR);
         this.minecart.setPassenger(this.as);
         enter();
 
