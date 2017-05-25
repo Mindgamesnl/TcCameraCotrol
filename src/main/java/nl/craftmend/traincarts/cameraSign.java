@@ -13,6 +13,8 @@ import nl.craftmend.screenManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 /**
  * Created by mats on 24-5-2017.
  */
@@ -57,34 +59,52 @@ public class cameraSign extends SignAction {
 
     public void prosess(MinecartMember<?> member, SignActionEvent info) {
 
-        if (info.getLine(2).equalsIgnoreCase("smooth")) {
+        if (info.getLine(3).contains("smooth:")) {
 
             if (((CommonMinecart) member.getEntity()).getPassenger() instanceof Player) {
 
-                Integer stepsFin = 0;
+                final Integer[] stepsFin = {0};
+                Integer schedule = 0;
 
-                Float startYaw = ((CommonMinecart) ((CommonMinecart) member.getEntity()).getPassenger()).getLocation().getYaw();
-                Float startPitch = ((CommonMinecart) ((CommonMinecart) member.getEntity()).getPassenger()).getLocation().getYaw();
+                Float startYaw = ((CommonMinecart) member.getEntity()).getPlayerPassenger().getLocation().getYaw();
+                Float startPitch = ((CommonMinecart) member.getEntity()).getPlayerPassenger().getLocation().getPitch();
 
                 Float targetYaw = Float.parseFloat(info.getLine(2).split(":")[0]);
                 Float targetPitch = Float.parseFloat(info.getLine(2).split(":")[1]);
 
-                Float relativeYaw = startYaw - targetYaw;
-                Float relativePitch = startPitch - targetPitch;
+                Float relativeYaw = (startYaw + targetYaw) / Integer.parseInt(info.getLine(3).replace("smooth:", ""));
+                Float relativePitch = (startPitch + targetPitch) / Integer.parseInt(info.getLine(3).replace("smooth:", ""));
 
-                Integer steps = Integer.parseInt(info.getLine(3));
+                final Float[] curY = new Float[1];
+                final Float[] curP = new Float[1];
 
-                Float stepsYaw = relativeYaw / steps;
-                Float stepsPitch = relativePitch / steps;
-
-                Bukkit.getScheduler().scheduleAsyncRepeatingTask(TcCamControl.getPl(), new Runnable() {
+                UUID id = ((CommonMinecart) member.getEntity()).getUniqueId();
+                Player p = ((CommonMinecart) member.getEntity()).getPlayerPassenger();
+                Integer finalSchedule = schedule;
+                Integer finalSchedule1 = schedule;
+                schedule = Bukkit.getScheduler().scheduleSyncRepeatingTask(TcCamControl.getPl(), new Runnable() {
                     @Override
                     public void run() {
+                        Boolean changed = false;
+                        stepsFin[0]++;
+                        if (!(Math.round((relativeYaw * stepsFin[0])) > targetYaw)) {
+                            curY[0] = Float.valueOf(Math.round(relativeYaw * stepsFin[0]));
+                            changed = true;
+                        }
 
+                        if (!(Math.round((relativePitch * stepsFin[0])) > targetPitch)) {
+                            curP[0] = Float.valueOf(Math.round((relativePitch * stepsFin[0])));
+                            changed = true;
+                        }
 
+                        if (!changed) {
+                            Bukkit.getScheduler().cancelTask(finalSchedule1);
+                        } else {
+                            screenManager.set(p, curY[0], curP[0], id);
+                        }
+                     }
+                }, 2, 2);
 
-                    }
-                },0 ,2);
             }
 
         } else {

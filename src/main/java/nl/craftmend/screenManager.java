@@ -15,10 +15,15 @@ public class screenManager {
     public static HashMap<String, playerScreen> list = new HashMap();
 
     public static void set(Player p, Float yaw, Float pitch, UUID id) {
+        Bukkit.broadcastMessage("Naam: " + p.getName());
+        Bukkit.broadcastMessage("Yaw: " + yaw);
+        Bukkit.broadcastMessage("Pitch: " + pitch);
+        Bukkit.broadcastMessage("Id: " + id.toString());
         if (list.containsKey(p.getName())) {
             playerScreen screen = list.get(p.getName());
             screen.setPitch(pitch, yaw);
         } else {
+
             list.put(p.getName(), new playerScreen(p, yaw, pitch, id));
         }
 
